@@ -1,0 +1,15 @@
+project: ingress
+spring:
+  application:
+    name: ms-product
+  cloud:
+    vault:
+      host: localhost
+      port: 8200
+      token: ${VAULT_TOKEN}
+      app-role:
+        role: token
+      scheme: http
+  config:
+    import:
+      - "vault:/secret/${project}/${spring.application.name}/application-${spring.profiles.active}"

@@ -1,0 +1,45 @@
+project: ingress
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ms-order
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  cloud:
+    vault:
+      host: localhost
+      port: 8200
+      token: ${VAULT_TOKEN}
+      app-role:
+        role: token
+      scheme: http
+  config:
+    import:
+      - "vault:/secret/${project}/${spring.application.name}/application-${spring.profiles.active}"
+
+client:
+  urls:
+    ms-product: localhost:8080
+    ms-payment: localhost:8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      reduce-quantity:
+        event-consumer-buffer-size: 10
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        sliding-window-type: COUNT_BASED

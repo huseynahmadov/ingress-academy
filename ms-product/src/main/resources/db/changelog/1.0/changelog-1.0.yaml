@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create Products table
+      author: huseynahmadov
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: DECIMAL(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: BIGINT
+                  constraints:
+                    nullable: true

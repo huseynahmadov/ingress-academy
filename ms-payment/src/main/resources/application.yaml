@@ -1,0 +1,22 @@
+project: ingress
+
+server:
+  port: 8082
+
+spring:
+  application:
+    name: ms-payment
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  cloud:
+    vault:
+      host: localhost
+      port: 8200
+      token: ${VAULT_TOKEN}
+      app-role:
+        role: token
+      scheme: http
+  config:
+    import:
+      - "vault:/secret/${project}/${spring.application.name}/application-${spring.profiles.active}"
